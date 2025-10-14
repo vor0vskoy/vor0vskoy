@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Скример на весь экран</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  #startBtn {
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: #fff;
+    transition: transform 0.1s;
+  }
+
+  #startBtn:active {
+    transform: scale(0.95);
+  }
+
+  #screamer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.ibb.co/KxXsmCw1/images.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<h1>Нажмите на старт!</h1>
+<button id="startBtn">START</button>
+
+<div id="screamer"></div>
+<audio id="screamAudio" src="https://www.myinstants.com/media/sounds/screamer.mp3" preload="auto"></audio>
+
+<script>
+const startBtn = document.getElementById('startBtn');
+const screamer = document.getElementById('screamer');
+const audio = document.getElementById('screamAudio');
+
+startBtn.addEventListener('click', async () => {
+    // Попросить браузер открыть в полноэкранном режиме
+    if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+        await document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
+        await document.documentElement.msRequestFullscreen();
+    }
+
+    // Показать скример
+    screamer.style.display = 'block';
+    
+    // Воспроизвести громкий звук
+    audio.play();
+
+    // Отключение кнопки после нажатия
+    startBtn.disabled = true;
+});
+
+// Закрытие скримера при клике
+screamer.addEventListener('click', () => {
+    screamer.style.display = 'none';
+    audio.pause();
+    audio.currentTime = 0;
+
+    // Выйти из полноэкранного режима
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+});
+</script>
+
+</body>
+</html>
