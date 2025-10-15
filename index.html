@@ -111,6 +111,9 @@
     overflow: hidden;
     letter-spacing: 1px;
     margin-bottom: 1.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   #startBtn::before {
@@ -156,6 +159,9 @@
     padding: 15px;
     margin-top: 20px;
     max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
   }
   
   #warning {
@@ -163,6 +169,7 @@
     text-align: center;
     font-size: 1rem;
     line-height: 1.5;
+    margin: 0;
   }
   
   .instructions {
@@ -176,6 +183,7 @@
   .instructions h3 {
     margin-bottom: 10px;
     color: var(--accent-color);
+    text-align: center;
   }
   
   .instructions ul {
@@ -234,7 +242,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://i.ibb.co/KxXsmCw1/images.jpg') no-repeat center center;
+    background: url('https://i.ibb.co/8DMyBdGS/vorovskoy.gif') no-repeat center center;
     background-size: cover;
     z-index: 9999;
     animation: experienceAppear 0.1s forwards;
@@ -295,6 +303,10 @@
     .container {
       padding: 1.5rem;
     }
+    
+    .warning-container {
+      max-width: 90%;
+    }
   }
 </style>
 </head>
@@ -309,7 +321,7 @@
   <button id="startBtn" class="pulse">НАЧАТЬ</button>
   
   <div class="warning-container">
-    <div id="warning">⚠️ Убедитесь, что вы готовы к неожиданным эффектам!</div>
+    <div id="warning">⚠️ Убедитесь, что вы готовы к полному погружению!</div>
   </div>
   
   <div class="instructions">
