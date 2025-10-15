@@ -1,199 +1,467 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Нажмите на старт!</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #fff;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 2rem;
-        }
-        
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 3rem;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            letter-spacing: 2px;
-            animation: titleFloat 3s ease-in-out infinite;
-        }
-        
-        @keyframes titleFloat {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .start-btn {
-            padding: 25px 80px;
-            font-size: 2.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 60px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-            color: #fff;
-            transition: all 0.4s ease;
-            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.7s;
-        }
-        
-        .start-btn:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 20px 45px rgba(255, 107, 107, 0.6);
-        }
-        
-        .start-btn:hover::before {
-            left: 100%;
-        }
-        
-        .start-btn:active {
-            transform: translateY(2px) scale(0.98);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 30px rgba(255, 107, 107, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
-            }
-        }
-        
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: floatShape linear infinite;
-        }
-        
-        @keyframes floatShape {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .start-btn {
-                padding: 20px 60px;
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интерактивный опыт</title>
+<style>
+  :root {
+    --primary-color: #2a5fff;
+    --primary-dark: #0044cc;
+    --accent-color: #6b8bff;
+    --dark-bg: #0a0a0a;
+    --darker-bg: #050505;
+    --text-color: #f0f0f0;
+    --warning-color: #44aaff;
+    --success-color: #4CAF50;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-color);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(42, 95, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(107, 139, 255, 0.1) 0%, transparent 50%);
+    z-index: -1;
+  }
+  
+  .container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    background: rgba(15, 15, 15, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  }
+  
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px rgba(42, 95, 255, 0.3);
+    letter-spacing: 1px;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: rgba(240, 240, 240, 0.8);
+    line-height: 1.5;
+  }
+  
+  #startBtn {
+    padding: 18px 50px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(42, 95, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+  }
+  
+  #startBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  #startBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(42, 95, 255, 0.6);
+  }
+  
+  #startBtn:hover::before {
+    left: 100%;
+  }
+  
+  #startBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(42, 95, 255, 0.4);
+  }
+  
+  #startBtn:disabled {
+    background: linear-gradient(135deg, #666 0%, #444 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  #startBtn:disabled::before {
+    display: none;
+  }
+  
+  .warning-container {
+    background: rgba(68, 170, 255, 0.1);
+    border: 1px solid rgba(68, 170, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    max-width: 80%;
+  }
+  
+  #warning {
+    color: var(--warning-color);
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .instructions {
+    margin-top: 2rem;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-align: left;
+  }
+  
+  .instructions h3 {
+    margin-bottom: 10px;
+    color: var(--accent-color);
+  }
+  
+  .instructions ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .instructions li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .instructions li::before {
+    content: 'ℹ️';
+    position: absolute;
+    left: 0;
+  }
+  
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(42, 95, 255, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(42, 95, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(42, 95, 255, 0);
+    }
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  #experience {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.ibb.co/KxXsmCw1/images.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    animation: experienceAppear 0.1s forwards;
+  }
+  
+  @keyframes experienceAppear {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  .particle {
+    position: absolute;
+    background: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: floatParticle linear infinite;
+  }
+  
+  @keyframes floatParticle {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(-100px) rotate(360deg);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+    
+    #startBtn {
+      padding: 15px 40px;
+      font-size: 1.2rem;
+    }
+    
+    .container {
+      padding: 1.5rem;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="floating-shapes" id="shapes"></div>
-    
-    <div class="container">
-        <h1>Нажмите на старт!</h1>
-        <button class="start-btn pulse">START</button>
-    </div>
 
-    <script>
-        // Создание плавающих форм для фона
-        function createShapes() {
-            const shapesContainer = document.getElementById('shapes');
-            
-            for (let i = 0; i < 25; i++) {
-                const shape = document.createElement('div');
-                shape.classList.add('shape');
-                
-                const size = Math.random() * 100 + 30;
-                shape.style.width = `${size}px`;
-                shape.style.height = `${size}px`;
-                shape.style.left = `${Math.random() * 100}vw`;
-                shape.style.background = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
-                shape.style.animationDuration = `${Math.random() * 30 + 20}s`;
-                shape.style.animationDelay = `${Math.random() * 10}s`;
-                
-                shapesContainer.appendChild(shape);
-            }
-        }
-        
-        // Создание форм при загрузке страницы
-        window.addEventListener('load', createShapes);
-        
-        // Добавление эффекта при нажатии кнопки
-        document.querySelector('.start-btn').addEventListener('click', function() {
-            this.classList.remove('pulse');
-            this.textContent = 'Запуск...';
-            this.style.background = 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)';
-            
-            // Имитация загрузки
-            setTimeout(() => {
-                this.textContent = 'Успешно!';
-                this.style.background = 'linear-gradient(135deg, #ffd166 0%, #ffb347 100%)';
-                
-                // Возврат к исходному состоянию
-                setTimeout(() => {
-                    this.textContent = 'START';
-                    this.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)';
-                    this.classList.add('pulse');
-                }, 1500);
-            }, 1000);
-        });
-    </script>
+<div class="particles" id="particles"></div>
+
+<div class="container floating">
+  <h1>ИНТЕРАКТИВНЫЙ ОПЫТ</h1>
+  <p class="subtitle">Нажмите кнопку ниже, чтобы начать интерактивный опыт<br>Рекомендуется использовать наушники для полного погружения!</p>
+  
+  <button id="startBtn" class="pulse">НАЧАТЬ</button>
+  
+  <div class="warning-container">
+    <div id="warning">⚠️ Убедитесь, что вы готовы к неожиданным эффектам!</div>
+  </div>
+  
+  <div class="instructions">
+    <h3>Инструкция:</h3>
+    <ul>
+      <li>Убедитесь, что громкость на вашем устройстве настроена комфортно</li>
+      <li>Нажмите кнопку "НАЧАТЬ" для запуска опыта</li>
+      <li>Для выхода кликните по экрану после активации</li>
+    </ul>
+  </div>
+</div>
+
+<div id="experience"></div>
+<audio id="experienceAudio" src="https://www.myinstants.com/media/sounds/screamer.mp3" preload="auto"></audio>
+
+<script>
+const startBtn = document.getElementById('startBtn');
+const experience = document.getElementById('experience');
+const audio = document.getElementById('experienceAudio');
+const warning = document.getElementById('warning');
+const particlesContainer = document.getElementById('particles');
+
+// Создание частиц для фона
+function createParticles() {
+  const colors = ['#2a5fff', '#6b8bff', '#44aaff'];
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    const size = Math.random() * 10 + 5;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+    
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// Функция для установки максимальной громкости
+function setMaxVolume() {
+  try {
+    audio.volume = 1.0; // Максимальная громкость (1.0 = 100%)
+    console.log('Громкость установлена на максимум');
+  } catch (error) {
+    console.error('Ошибка при установке громкости:', error);
+  }
+}
+
+// Установить максимальную громкость при загрузке страницы
+window.addEventListener('load', () => {
+  setMaxVolume();
+  createParticles();
+});
+
+startBtn.addEventListener('click', async () => {
+  try {
+    // Установить громкость на максимум перед воспроизведением
+    setMaxVolume();
+    
+    // Попросить браузер открыть в полноэкранном режиме
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+      await document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
+      await document.documentElement.msRequestFullscreen();
+    }
+
+    // Показать интерактивный опыт
+    experience.style.display = 'block';
+    
+    // Воспроизвести звук
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        console.log('Аудио успешно воспроизводится');
+      }).catch(error => {
+        console.error('Ошибка воспроизведения аудио:', error);
+        // Попробовать воспроизвести снова после жеста пользователя
+        document.addEventListener('click', () => {
+          audio.play().catch(e => console.error('Повторная ошибка:', e));
+        }, { once: true });
+      });
+    }
+
+    // Отключение кнопки после нажатия
+    startBtn.disabled = true;
+    startBtn.textContent = 'АКТИВИРОВАНО';
+    startBtn.classList.remove('pulse');
+    warning.style.display = 'none';
+
+  } catch (error) {
+    console.error('Ошибка при активации опыта:', error);
+  }
+});
+
+// Закрытие опыта при клике
+experience.addEventListener('click', () => {
+  experience.style.display = 'none';
+  audio.pause();
+  audio.currentTime = 0;
+
+  // Выйти из полноэкранного режима
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+
+  // Сбросить кнопку
+  startBtn.disabled = false;
+  startBtn.textContent = 'НАЧАТЬ';
+  startBtn.classList.add('pulse');
+  warning.style.display = 'block';
+});
+
+// Дополнительная проверка громкости при изменении
+audio.addEventListener('volumechange', () => {
+  if (audio.volume < 1.0) {
+    console.log('Громкость была изменена, устанавливаем максимум');
+    setMaxVolume();
+  }
+});
+
+// Обработка выхода из полноэкранного режима
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
+
+function exitHandler() {
+  if (!document.fullscreenElement && 
+      !document.webkitFullscreenElement && 
+      !document.mozFullScreenElement &&
+      !document.msFullscreenElement) {
+    // Если вышел из полноэкранного режима, скрыть опыт
+    experience.style.display = 'none';
+    audio.pause();
+    audio.currentTime = 0;
+    startBtn.disabled = false;
+    startBtn.textContent = 'НАЧАТЬ';
+    startBtn.classList.add('pulse');
+    warning.style.display = 'block';
+  }
+}
+</script>
+
 </body>
 </html>
