@@ -33,6 +33,11 @@
     transform: scale(0.95);
   }
 
+  #startBtn:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+
   #screamer {
     display: none;
     position: fixed;
@@ -44,12 +49,21 @@
     background-size: cover;
     z-index: 9999;
   }
+
+  #warning {
+    margin-top: 20px;
+    color: #ff4444;
+    text-align: center;
+    font-size: 14px;
+    max-width: 80%;
+  }
 </style>
 </head>
 <body>
 
 <h1>Нажмите на старт!</h1>
 <button id="startBtn">START</button>
+<div id="warning">ВНИМАНИЕ: При нажатии кнопки включится громкий звук и полноэкранный режим!</div>
 
 <div id="screamer"></div>
 <audio id="screamAudio" src="https://www.myinstants.com/media/sounds/screamer.mp3" preload="auto"></audio>
@@ -58,44 +72,115 @@
 const startBtn = document.getElementById('startBtn');
 const screamer = document.getElementById('screamer');
 const audio = document.getElementById('screamAudio');
+const warning = document.getElementById('warning');
+
+// Функция для установки максимальной громкости
+function setMaxVolume() {
+  try {
+    audio.volume = 1.0; // Максимальная громкость (1.0 = 100%)
+    console.log('Громкость установлена на максимум');
+  } catch (error) {
+    console.error('Ошибка при установке громкости:', error);
+  }
+}
+
+// Установить максимальную громкость при загрузке страницы
+window.addEventListener('load', () => {
+  setMaxVolume();
+});
 
 startBtn.addEventListener('click', async () => {
+  try {
+    // Установить громкость на максимум перед воспроизведением
+    setMaxVolume();
+    
     // Попросить браузер открыть в полноэкранном режиме
     if (document.documentElement.requestFullscreen) {
-        await document.documentElement.requestFullscreen();
+      await document.documentElement.requestFullscreen();
     } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
-        await document.documentElement.webkitRequestFullscreen();
+      await document.documentElement.webkitRequestFullscreen();
     } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
-        await document.documentElement.msRequestFullscreen();
+      await document.documentElement.msRequestFullscreen();
     }
 
     // Показать скример
     screamer.style.display = 'block';
     
     // Воспроизвести громкий звук
-    audio.play();
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        console.log('Аудио успешно воспроизводится');
+      }).catch(error => {
+        console.error('Ошибка воспроизведения аудио:', error);
+        // Попробовать воспроизвести снова после жеста пользователя
+        document.addEventListener('click', () => {
+          audio.play().catch(e => console.error('Повторная ошибка:', e));
+        }, { once: true });
+      });
+    }
 
     // Отключение кнопки после нажатия
     startBtn.disabled = true;
+    startBtn.textContent = 'АКТИВИРОВАНО';
+    warning.style.display = 'none';
+
+  } catch (error) {
+    console.error('Ошибка при активации скримера:', error);
+  }
 });
 
 // Закрытие скримера при клике
 screamer.addEventListener('click', () => {
+  screamer.style.display = 'none';
+  audio.pause();
+  audio.currentTime = 0;
+
+  // Выйти из полноэкранного режима
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+
+  // Сбросить кнопку
+  startBtn.disabled = false;
+  startBtn.textContent = 'START';
+  warning.style.display = 'block';
+});
+
+// Дополнительная проверка громкости при изменении
+audio.addEventListener('volumechange', () => {
+  if (audio.volume < 1.0) {
+    console.log('Громкость была изменена, устанавливаем максимум');
+    setMaxVolume();
+  }
+});
+
+// Обработка выхода из полноэкранного режима
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
+
+function exitHandler() {
+  if (!document.fullscreenElement && 
+      !document.webkitFullscreenElement && 
+      !document.mozFullScreenElement &&
+      !document.msFullscreenElement) {
+    // Если вышел из полноэкранного режима, скрыть скример
     screamer.style.display = 'none';
     audio.pause();
     audio.currentTime = 0;
-
-    // Выйти из полноэкранного режима
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    }
-});
+    startBtn.disabled = false;
+    startBtn.textContent = 'START';
+    warning.style.display = 'block';
+  }
+}
 </script>
 
 </body>
 </html>
-
