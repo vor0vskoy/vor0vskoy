@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
-    --primary-color: #7289DA;
+    --primary-color: #7289DA; /* Discord цвет */
     --primary-dark: #5865F2;
     --accent-color: #FF73FA;
     --dark-bg: #0a0a0a;
@@ -39,9 +39,249 @@
     cursor: default;
   }
   
-  /* Остальные стили остаются такими же как в вашем коде */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 10% 20%, rgba(114, 137, 218, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(255, 115, 250, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(67, 181, 129, 0.1) 0%, transparent 60%);
+    z-index: -1;
+  }
   
-  /* ДОБАВИТЬ ЭТИ СТИЛИ ДЛЯ ФИКСА СКРИМЕРА */
+  .container {
+    text-align: center;
+    padding: 2.5rem;
+    max-width: 600px;
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 0 40px rgba(114, 137, 218, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    margin-bottom: 30px;
+  }
+  
+  .container:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 0 60px rgba(114, 137, 218, 0.3);
+  }
+  
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--success-color));
+  }
+  
+  .container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .container:hover::after {
+    opacity: 1;
+  }
+  
+  .avatar-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--primary-color);
+    box-shadow: 
+      0 0 25px rgba(114, 137, 218, 0.5),
+      inset 0 0 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  
+  .avatar-container:hover {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 
+      0 0 35px rgba(114, 137, 218, 0.8),
+      inset 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.05) contrast(1.1);
+  }
+  
+  .avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(114, 137, 218, 0.3) 100%);
+    opacity: 0.7;
+  }
+  
+  h1 {
+    font-size: 3.2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--success-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 15px rgba(114, 137, 218, 0.4);
+    letter-spacing: 1.5px;
+    font-weight: 800;
+  }
+  
+  .discord-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(114, 137, 218, 0.2);
+    border: 2px solid var(--primary-color);
+    border-radius: 50px;
+    padding: 12px 25px;
+    margin: 2rem 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .discord-badge:hover {
+    background: rgba(114, 137, 218, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+  }
+  
+  .discord-badge i {
+    font-size: 2rem;
+    margin-right: 12px;
+    color: var(--primary-color);
+  }
+  
+  .discord-badge span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  
+  .discord-badge .discord-tag {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-left: 8px;
+    letter-spacing: 1px;
+  }
+  
+  #startBtn {
+    padding: 20px 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(114, 137, 218, 0.4);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1.5px;
+    margin: 2.5rem auto;
+    display: block;
+    z-index: 10;
+  }
+  
+  #startBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s;
+  }
+  
+  #startBtn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(114, 137, 218, 0.6);
+  }
+  
+  #startBtn:hover::before {
+    left: 100%;
+  }
+  
+  #startBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+  }
+  
+  #startBtn:disabled {
+    background: linear-gradient(135deg, #666 0%, #444 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  #startBtn:disabled::before {
+    display: none;
+  }
+  
+  .floating {
+    animation: floating 4s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .pulse {
+    animation: pulse 2.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(114, 137, 218, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(114, 137, 218, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(114, 137, 218, 0);
+    }
+  }
+  
   #experience {
     display: none;
     position: fixed;
@@ -54,18 +294,16 @@
     overflow: hidden;
   }
   
-  /* Обеспечиваем корректное отображение изображения */
   .scary-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Изменено с cover на contain чтобы все изображение было видно */
+    object-fit: cover;
     display: block;
     opacity: 1;
-    z-index: 2;
-    background-color: #000; /* Фон на случай прозрачного изображения */
+    transition: opacity 0.05s linear;
   }
   
   .scary-overlay {
@@ -75,13 +313,40 @@
     width: 100%;
     height: 100%;
     background: #000;
-    z-index: 3;
+    z-index: 1;
     opacity: 0;
     transition: opacity 0.05s linear;
+  }
+  
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
     pointer-events: none;
   }
   
-  /* Анимации для скримера - ОБНОВЛЕНЫ */
+  .particle {
+    position: absolute;
+    background: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: floatParticle linear infinite;
+  }
+  
+  @keyframes floatParticle {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(-100px) rotate(360deg);
+    }
+  }
+  
+  /* Анимации для скримера */
   @keyframes horrorShake {
     0%, 100% { transform: translateX(0) translateY(0); }
     10% { transform: translateX(-10px) translateY(-5px); }
@@ -112,26 +377,86 @@
   }
   
   .scary-shake {
-    animation: horrorShake 0.3s linear infinite !important;
+    animation: horrorShake 0.3s linear infinite;
   }
   
   .scary-glitch {
-    animation: horrorGlitch 0.5s linear infinite !important;
+    animation: horrorGlitch 0.5s linear infinite;
   }
   
   .scary-scale {
-    animation: horrorScale 0.4s ease-in-out infinite !important;
+    animation: horrorScale 0.4s ease-in-out infinite;
   }
   
-  /* Эффект внезапного появления */
-  @keyframes suddenAppear {
-    0% { opacity: 0; transform: scale(0.8); }
-    10% { opacity: 1; transform: scale(1.1); }
-    20% { opacity: 1; transform: scale(1); }
+  footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    width: 100%;
+    max-width: 600px;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
   
-  .sudden-appear {
-    animation: suddenAppear 0.3s ease-out forwards;
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.8rem;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+    }
+    
+    .discord-badge {
+      padding: 10px 20px;
+    }
+    
+    .discord-badge span {
+      font-size: 1.2rem;
+    }
+    
+    .discord-badge i {
+      font-size: 1.8rem;
+    }
+    
+    #startBtn {
+      padding: 18px 45px;
+      font-size: 1.3rem;
+    }
+    
+    .avatar-container {
+      width: 160px;
+      height: 160px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 1.5rem;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+    }
+    
+    .avatar-container {
+      width: 140px;
+      height: 140px;
+    }
+    
+    .discord-badge {
+      padding: 8px 16px;
+    }
+    
+    .discord-badge span {
+      font-size: 1.1rem;
+    }
+    
+    #startBtn {
+      padding: 16px 35px;
+      font-size: 1.2rem;
+    }
   }
 </style>
 </head>
@@ -139,7 +464,7 @@
 
 <div class="particles" id="particles"></div>
 
-<div class="container floating" id="mainContainer">
+<div class="container floating">
   <div class="avatar-container">
     <img src="https://i.ibb.co/1t9VDPDM/add1378da04f19e360e823f524d58f17.png" alt="vorovskoy" class="avatar">
     <div class="avatar-overlay"></div>
@@ -155,41 +480,18 @@
   <button id="startBtn" class="pulse">
     <i class="fas fa-info-circle"></i> ИНФОРМАЦИЯ
   </button>
-  
-  <!-- ДОБАВИТЬ ПРЕДУПРЕЖДЕНИЕ -->
-  <div id="warning" style="margin-top: 20px; padding: 15px; background: rgba(255, 51, 102, 0.2); border-radius: 10px; border: 2px solid var(--warning-color); display: none;">
-    <p style="color: #ffcc00; font-weight: bold;">
-      <i class="fas fa-exclamation-triangle"></i> ВНИМАНИЕ: Это страшный контент (скример)!
-    </p>
-    <p style="font-size: 0.9rem; margin-top: 5px;">
-      Не нажимайте, если боитесь резких звуков и изображений!
-    </p>
-  </div>
 </div>
 
-<!-- ИСПРАВЛЕННЫЙ БЛОК СКРИМЕРА -->
 <div id="experience">
-  <!-- Используем резервное изображение на случай если основное не загрузится -->
-  <img src="https://i.ibb.co/r2d8SSqV/image.png" class="scary-image" id="scaryImage" alt="Страшное изображение" 
-       onerror="this.src='https://i.imgur.com/7QyM0bL.png'; this.onerror=null;">
+  <img src="https://i.ibb.co/r2d8SSqV/image.png" class="scary-image" id="scaryImage" alt="Страшное изображение">
   <div class="scary-overlay" id="scaryOverlay"></div>
-  
-  <!-- Добавляем текстовое сообщение на случай полной ошибки -->
-  <div id="errorMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 24px; text-align: center; z-index: 4;">
-    Ошибка загрузки контента<br>
-    <button onclick="closeExperience()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary-color); border: none; border-radius: 5px; color: white; cursor: pointer;">
-      ВЕРНУТЬСЯ
-    </button>
-  </div>
 </div>
 
-<!-- ДОБАВИТЬ АУДИО ДЛЯ ПРЕДВАРИТЕЛЬНОЙ ЗАГРУЗКИ -->
-<audio id="experienceAudio" preload="auto" crossorigin="anonymous">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-scary-scream-392.mp3" type="audio/mpeg">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-horror-hit-2589.mp3" type="audio/mpeg">
+<audio id="experienceAudio" loop>
+  <source src="https://www.myinstants.com/media/sounds/screamer.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="scarySound" preload="auto" crossorigin="anonymous">
+<audio id="scarySound" preload="auto">
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-horror-hit-2589.mp3" type="audio/mpeg">
 </audio>
 
@@ -206,263 +508,194 @@ const audio = document.getElementById('experienceAudio');
 const scarySound = document.getElementById('scarySound');
 const particlesContainer = document.getElementById('particles');
 const discordBadge = document.querySelector('.discord-badge');
-const mainContainer = document.getElementById('mainContainer');
-const warning = document.getElementById('warning');
-const errorMessage = document.getElementById('errorMessage');
+const mainContainer = document.querySelector('.container');
 
 let isExperienceActive = false;
 let blinkInterval;
 let effectsInterval;
 let isBlinking = false;
-let audioPlayAttempted = false;
 
-// УЛУЧШЕННАЯ ФУНКЦИЯ: Предзагрузка всех ресурсов
-function preloadResources() {
-  console.log('Начинаем предзагрузку ресурсов...');
-  
-  // Предзагрузка изображения скримера
-  const img = new Image();
-  img.src = 'https://i.ibb.co/r2d8SSqV/image.png';
-  
-  // Резервное изображение
-  const backupImg = new Image();
-  backupImg.src = 'https://i.imgur.com/7QyM0bL.png';
-  
-  img.onload = () => {
-    console.log('Основное изображение загружено');
-    scaryImage.dataset.loaded = 'true';
-  };
-  
-  img.onerror = () => {
-    console.log('Ошибка загрузки основного изображения, используем резервное');
-    scaryImage.src = backupImg.src;
-  };
-  
-  // Предзагрузка аудио
-  audio.load();
-  scarySound.load();
-  
-  // Показать предупреждение
-  setTimeout(() => warning.style.display = 'block', 1000);
-}
-
-// УЛУЧШЕННАЯ ФУНКЦИЯ: Запуск звука с проверкой
-function startAudio() {
-  if (audioPlayAttempted) return;
-  
-  audioPlayAttempted = true;
-  
-  try {
-    // Установка громкости
-    audio.volume = 1.0;
-    scarySound.volume = 0.8;
+// Создание частиц для фона
+function createParticles() {
+  const colors = ['#7289DA', '#FF73FA', '#43B581', '#FF3366'];
+  for (let i = 0; i < 40; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
     
-    // Воспроизведение основного звука
-    const playAudio = () => {
-      audio.currentTime = 0;
-      audio.play().then(() => {
-        console.log('Аудио запущено');
-      }).catch(e => {
-        console.log('Автовоспроизведение заблокировано, требуется клик');
-      });
-    };
+    const size = Math.random() * 12 + 3;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.animationDuration = `${Math.random() * 25 + 15}s`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
     
-    // Воспроизведение страшного звука (с задержкой для эффекта неожиданности)
-    const playScarySound = () => {
-      setTimeout(() => {
-        scarySound.currentTime = 0;
-        scarySound.play().catch(e => console.log('Звук скримера не воспроизведен'));
-      }, 800);
-    };
-    
-    playAudio();
-    playScarySound();
-    
-  } catch (error) {
-    console.error('Ошибка при запуске звука:', error);
+    particlesContainer.appendChild(particle);
   }
 }
 
-// УЛУЧШЕННАЯ ФУНКЦИЯ: Запуск визуальных эффектов
-function startHorrorEffects() {
-  console.log('Запуск визуальных эффектов');
+// Функция для установки максимальной громкости
+function setMaxVolume() {
+  try {
+    audio.volume = 1.0;
+    scarySound.volume = 1.0;
+    console.log('Громкость установлена на максимум');
+  } catch (error) {
+    console.error('Ошибка при установке громкости:', error);
+  }
+}
+
+// Функция для запуска звука в цикле
+function startAudioLoop() {
+  audio.loop = true;
+  setMaxVolume();
   
-  // Скрыть основной контейнер
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      console.log('Аудио успешно воспроизводится в цикле');
+    }).catch(error => {
+      console.error('Ошибка воспроизведения аудио:', error);
+      document.addEventListener('click', () => {
+        audio.play().catch(e => console.error('Повторная ошибка:', e));
+      }, { once: true });
+    });
+  }
+  
+  // Запустить страшный звук
+  scarySound.play().catch(e => console.error('Ошибка страшного звука:', e));
+}
+
+// Эффект моргания - теперь используется черный оверлей вместо скрытия изображения
+function startHorrorEffects() {
+  // Скрыть основной контейнер полностью
   mainContainer.style.display = 'none';
   
-  // 1. Внезапное появление изображения
-  scaryImage.classList.add('sudden-appear');
-  scaryImage.style.display = 'block';
-  scaryOverlay.style.opacity = '0';
+  let blinkCounter = 0;
+  let lastBlinkTime = 0;
   
-  // 2. Быстрое моргание
+  // Быстрое моргание с черным оверлеем
   blinkInterval = setInterval(() => {
-    isBlinking = !isBlinking;
-    scaryOverlay.style.opacity = isBlinking ? '1' : '0';
+    const now = Date.now();
     
-    // Случайные красные вспышки
-    if (Math.random() > 0.7) {
-      experience.style.backgroundColor = '#ff0000';
-      setTimeout(() => {
-        experience.style.backgroundColor = '#000';
-      }, 50);
+    // Ультра-быстрое моргание (каждые 50-150ms)
+    if (now - lastBlinkTime > 50 + Math.random() * 100) {
+      isBlinking = !isBlinking;
+      
+      if (isBlinking) {
+        // Показать изображение - скрыть черный оверлей
+        scaryOverlay.style.opacity = '0';
+      } else {
+        // Скрыть изображение - показать черный оверлей
+        scaryOverlay.style.opacity = '1';
+      }
+      
+      // Случайные дополнительные эффекты
+      if (Math.random() > 0.7) {
+        // Короткая вспышка
+        scaryOverlay.style.backgroundColor = '#ff0000';
+        setTimeout(() => {
+          scaryOverlay.style.backgroundColor = '#000';
+        }, 30);
+      }
+      
+      lastBlinkTime = now;
+      blinkCounter++;
     }
-  }, 100 + Math.random() * 150);
+    
+    // Каждые 10 морганий добавляем супер-эффект
+    if (blinkCounter % 10 === 0) {
+      addSuperEffect();
+    }
+    
+  }, 16); // ~60 FPS для плавности
   
-  // 3. Случайные эффекты
+  // Дополнительные случайные эффекты
   effectsInterval = setInterval(() => {
-    // Тряска
+    // Случайная тряска
     if (Math.random() > 0.5) {
       scaryImage.classList.add('scary-shake');
       setTimeout(() => {
         scaryImage.classList.remove('scary-shake');
-      }, 500);
+      }, 300);
     }
     
-    // Глитч
+    // Случайный глитч-эффект
     if (Math.random() > 0.6) {
       scaryImage.classList.add('scary-glitch');
       setTimeout(() => {
         scaryImage.classList.remove('scary-glitch');
-      }, 600);
+      }, 500);
     }
     
-    // Масштабирование
+    // Случайное масштабирование
     if (Math.random() > 0.7) {
       scaryImage.classList.add('scary-scale');
       setTimeout(() => {
         scaryImage.classList.remove('scary-scale');
       }, 400);
     }
-  }, 300);
+    
+    // Интенсивная красная вспышка
+    if (Math.random() > 0.8) {
+      experience.style.backgroundColor = '#ff0000';
+      setTimeout(() => {
+        experience.style.backgroundColor = '#000';
+      }, 100);
+    }
+    
+  }, 200);
+}
+
+// Супер-эффект для экстремального страха
+function addSuperEffect() {
+  // Интенсивная тряска
+  scaryImage.classList.add('scary-shake');
   
-  // 4. Автоматическое закрытие через 5 секунд
+  // Глитч-эффект
+  scaryImage.classList.add('scary-glitch');
+  
+  // Яркая красная вспышка
+  experience.style.backgroundColor = '#ff0000';
+  
+  // Усиление звука на короткое время
+  if (audio.volume < 1.0) {
+    audio.volume = 1.0;
+  }
+  
+  // Сбросить эффекты через 500ms
   setTimeout(() => {
-    if (isExperienceActive) {
-      closeExperience();
-    }
-  }, 5000);
+    scaryImage.classList.remove('scary-shake');
+    scaryImage.classList.remove('scary-glitch');
+    experience.style.backgroundColor = '#000';
+  }, 500);
 }
 
-// ФИКС: Улучшенная функция закрытия
-function closeExperience() {
-  console.log('Закрытие опыта');
-  
-  // Остановить все интервалы
-  if (blinkInterval) clearInterval(blinkInterval);
-  if (effectsInterval) clearInterval(effectsInterval);
-  
-  // Скрыть опыт
-  experience.style.display = 'none';
-  isExperienceActive = false;
-  audioPlayAttempted = false;
-  
-  // Показать основной контейнер
-  mainContainer.style.display = 'block';
-  
-  // Сбросить все стили
-  scaryImage.classList.remove('scary-shake', 'scary-glitch', 'scary-scale', 'sudden-appear');
-  scaryImage.style.display = '';
-  scaryOverlay.style.opacity = '0';
-  experience.style.backgroundColor = '#000';
-  
-  // Остановить звук
-  audio.pause();
-  audio.currentTime = 0;
-  scarySound.pause();
-  scarySound.currentTime = 0;
-  
-  // Разблокировать скролл
-  document.body.style.overflow = '';
-  document.body.style.cursor = '';
-  
-  // Выйти из полноэкранного режима
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  }
-  
-  // Сбросить кнопку
-  startBtn.disabled = false;
-  startBtn.innerHTML = '<i class="fas fa-info-circle"></i> ИНФОРМАЦИЯ';
-  startBtn.classList.add('pulse');
-}
-
-// УЛУЧШЕННЫЙ ОБРАБОТЧИК КЛИКА
-startBtn.addEventListener('click', async () => {
-  console.log('Активация скримера...');
-  
-  // Проверка загрузки изображения
-  if (!scaryImage.dataset.loaded && scaryImage.naturalWidth === 0) {
-    errorMessage.style.display = 'block';
-    scaryImage.style.display = 'none';
-    console.error('Изображение не загружено');
-  }
-  
-  try {
-    // Полноэкранный режим
-    if (document.documentElement.requestFullscreen) {
-      await document.documentElement.requestFullscreen();
-    }
+// Добавить эффект копирования Discord ника
+discordBadge.addEventListener('click', () => {
+  const discordTag = 'v0r0vskoy';
+  navigator.clipboard.writeText(discordTag).then(() => {
+    const originalHTML = discordBadge.innerHTML;
+    discordBadge.innerHTML = '<i class="fas fa-check"></i><span>Скопировано в буфер!</span>';
+    discordBadge.style.background = 'rgba(67, 181, 129, 0.3)';
+    discordBadge.style.borderColor = 'var(--success-color)';
     
-    // Показать опыт
-    experience.style.display = 'block';
-    isExperienceActive = true;
-    
-    // Блокировать скролл
-    document.body.style.overflow = 'hidden';
-    document.body.style.cursor = 'none';
-    
-    // Запустить звук и эффекты
-    startAudio();
-    startHorrorEffects();
-    
-    // Обновить кнопку
-    startBtn.disabled = true;
-    startBtn.innerHTML = '<i class="fas fa-skull-crossbones"></i> АКТИВНО';
-    startBtn.classList.remove('pulse');
-    
-  } catch (error) {
-    console.error('Ошибка:', error);
-    
-    // Запустить в обычном режиме если полноэкранный не работает
-    experience.style.display = 'block';
-    isExperienceActive = true;
-    startAudio();
-    startHorrorEffects();
-    startBtn.disabled = true;
-  }
+    setTimeout(() => {
+      discordBadge.innerHTML = originalHTML;
+      discordBadge.style.background = '';
+      discordBadge.style.borderColor = '';
+    }, 2000);
+  }).catch(err => {
+    console.error('Ошибка копирования: ', err);
+  });
 });
 
-// ОБРАБОТЧИК ОШИБОК ИЗОБРАЖЕНИЯ
-scaryImage.addEventListener('error', function() {
-  console.log('Ошибка загрузки изображения скримера');
-  this.src = 'https://i.imgur.com/7QyM0bL.png';
-  this.style.objectFit = 'cover';
-});
-
-// ИНИЦИАЛИЗАЦИЯ
+// Установить максимальную громкость при загрузке страницы
 window.addEventListener('load', () => {
-  console.log('Страница загружена');
+  setMaxVolume();
+  createParticles();
   
-  // Предзагрузка ресурсов
-  preloadResources();
-  
-  // Создание частиц
-  for (let i = 0; i < 40; i++) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-    particle.style.cssText = `
-      width: ${Math.random() * 12 + 3}px;
-      height: ${Math.random() * 12 + 3}px;
-      left: ${Math.random() * 100}vw;
-      background: ${['#7289DA', '#FF73FA', '#43B581', '#FF3366'][Math.floor(Math.random() * 4)]};
-      animation-duration: ${Math.random() * 25 + 15}s;
-      animation-delay: ${Math.random() * 5}s;
-    `;
-    particlesContainer.appendChild(particle);
-  }
-  
-  // Анимация появления
+  // Анимация появления элементов
   document.querySelectorAll('.avatar-container, h1, .discord-badge, #startBtn').forEach((el, i) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
@@ -475,38 +708,180 @@ window.addEventListener('load', () => {
   });
 });
 
-// КОПИРОВАНИЕ DISCORD
-discordBadge.addEventListener('click', () => {
-  navigator.clipboard.writeText('v0r0vskoy').then(() => {
-    const originalHTML = discordBadge.innerHTML;
-    discordBadge.innerHTML = '<i class="fas fa-check"></i><span>Скопировано!</span>';
-    discordBadge.style.background = 'rgba(67, 181, 129, 0.3)';
+startBtn.addEventListener('click', async () => {
+  try {
+    // Попросить браузер открыть в полноэкранном режиме
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      await document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      await document.documentElement.msRequestFullscreen();
+    }
+
+    // Показать интерактивный опыт
+    experience.style.display = 'block';
+    isExperienceActive = true;
     
-    setTimeout(() => {
-      discordBadge.innerHTML = originalHTML;
-      discordBadge.style.background = '';
-    }, 2000);
-  });
+    // Сбросить все стили
+    scaryImage.style.opacity = '1';
+    scaryImage.style.transform = '';
+    scaryImage.style.filter = '';
+    scaryOverlay.style.opacity = '0';
+    scaryOverlay.style.backgroundColor = '#000';
+    experience.style.backgroundColor = '#000';
+    
+    // Убрать все классы анимаций
+    scaryImage.classList.remove('scary-shake', 'scary-glitch', 'scary-scale');
+    
+    // Запустить звук в цикле
+    startAudioLoop();
+    
+    // Запустить страшные эффекты
+    startHorrorEffects();
+    
+    // Блокировать все кнопки и скролл
+    document.body.style.overflow = 'hidden';
+    document.body.style.cursor = 'none';
+
+    // Отключение кнопки после нажатия
+    startBtn.disabled = true;
+    startBtn.innerHTML = '<i class="fas fa-skull-crossbones"></i> АКТИВИРОВАНО';
+    startBtn.classList.remove('pulse');
+
+  } catch (error) {
+    console.error('Ошибка при активации опыта:', error);
+  }
 });
 
-// КЛАВИША ESCAPE
+// Блокировка всех действий во время скримера
+experience.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+});
+
+experience.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  return false;
+});
+
+experience.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+});
+
+experience.addEventListener('mouseup', (e) => {
+  e.preventDefault();
+});
+
+// Закрытие опыта при нажатии Escape
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && isExperienceActive) {
     closeExperience();
   }
+  
+  // Блокировать другие клавиши во время скримера
+  if (isExperienceActive) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 });
 
-// ДВОЙНОЙ КЛИК ДЛЯ ВЫХОДА
-experience.addEventListener('dblclick', closeExperience);
+// Закрыть опыт также по двойному клику
+experience.addEventListener('dblclick', () => {
+  if (isExperienceActive) {
+    closeExperience();
+  }
+});
 
-// ОБРАБОТЧИК ВЫХОДА ИЗ ПОЛНОЭКРАННОГО РЕЖИМА
+function closeExperience() {
+  // Остановить все эффекты
+  clearInterval(blinkInterval);
+  clearInterval(effectsInterval);
+  
+  // Скрыть опыт
+  experience.style.display = 'none';
+  isExperienceActive = false;
+  
+  // Показать основной контейнер
+  mainContainer.style.display = 'block';
+  
+  // Сбросить все стили
+  scaryImage.classList.remove('scary-shake', 'scary-glitch', 'scary-scale');
+  scaryImage.style.opacity = '1';
+  scaryImage.style.transform = '';
+  scaryImage.style.filter = '';
+  scaryOverlay.style.opacity = '0';
+  scaryOverlay.style.backgroundColor = '#000';
+  experience.style.backgroundColor = '#000';
+  
+  // Останавливаем звук
+  audio.pause();
+  audio.currentTime = 0;
+  scarySound.pause();
+  scarySound.currentTime = 0;
+  
+  // Разблокировать скролл и курсор
+  document.body.style.overflow = '';
+  document.body.style.cursor = '';
+
+  // Выйти из полноэкранного режима
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+
+  // Сбросить кнопку
+  startBtn.disabled = false;
+  startBtn.innerHTML = '<i class="fas fa-info-circle"></i> ИНФОРМАЦИЯ';
+  startBtn.classList.add('pulse');
+}
+
+// Дополнительная проверка громкости при изменении
+audio.addEventListener('volumechange', () => {
+  if (audio.volume < 1.0) {
+    setMaxVolume();
+  }
+});
+
+// Обработка выхода из полноэкранного режима
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
+
 function exitHandler() {
-  if (!document.fullscreenElement && isExperienceActive) {
+  if (!document.fullscreenElement && 
+      !document.webkitFullscreenElement && 
+      !document.mozFullScreenElement &&
+      !document.msFullscreenElement) {
     closeExperience();
   }
 }
 
-document.addEventListener('fullscreenchange', exitHandler);
+// Автоматическое восстановление воспроизведения при ошибках
+audio.addEventListener('error', (e) => {
+  console.error('Ошибка аудио:', e);
+  setTimeout(() => {
+    if (isExperienceActive) {
+      startAudioLoop();
+    }
+  }, 1000);
+});
+
+audio.addEventListener('ended', () => {
+  if (isExperienceActive) {
+    startAudioLoop();
+  }
+});
+
+// Предзагрузка страшного изображения
+window.addEventListener('load', () => {
+  const img = new Image();
+  img.src = 'https://i.ibb.co/r2d8SSqV/image.png';
+});
 </script>
 
 </body>
