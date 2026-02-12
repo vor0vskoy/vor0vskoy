@@ -1,228 +1,276 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vorovskoy</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300&display=swap');
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            cursor: none !important;
-            user-select: none;
-        }
-        body {
-            background: #000;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-            perspective: 1500px;
-        }
-        /* Сияющий курсор-точка */
-        #cursor {
-            width: 6px; height: 6px;
-            background: #fff;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            box-shadow: 0 0 15px 2px rgba(255, 255, 255, 0.6);
-            transform: translate(-50%, -50%);
-            transition: transform 0.05s linear;
-        }
-        /* Медленный сияющий дождь */
-        #rain-canvas {
-            position: fixed; inset: 0;
-            z-index: 1; opacity: 0.3;
-            pointer-events: none;
-        }
-        /* Карточка профиля */
-        .card {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 50px;
-            padding: 60px 50px; width: 350px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-            box-shadow:
-                0 30px 60px rgba(0,0,0,0.8),
-                0 0 12px rgba(255, 255, 255, 0.08),
-                0 0 25px rgba(255, 255, 255, 0.04);
-        }
-        .avatar {
-            width: 120px; height: 120px;
-            border-radius: 45px;
-            margin-bottom: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            filter: grayscale(1) brightness(0.8);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.06);
-            transition: all 0.9s ease;
-        }
-        .card:hover .avatar {
-            filter: grayscale(0) brightness(1);
-            border-color: rgba(255, 255, 255, 0.22);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.12);
-        }
-        h1 {
-            color: #fff;
-            font-weight: 100;
-            font-size: 0.8rem;
-            letter-spacing: 15px;
-            text-transform: uppercase;
-            margin-bottom: 45px;
-            opacity: 0.3;
-            transition: all 0.7s ease;
-        }
-        .card:hover h1 {
-            opacity: 0.65;
-            text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
-        }
-        .btn {
-            width: 100%; background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 18px; border-radius: 24px;
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none; font-size: 0.6rem;
-            letter-spacing: 4px; display: block;
-            transition: all 0.4s; margin-bottom: 15px;
-        }
-        .btn:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-        /* Оверлей входа */
-        #overlay {
-            position: fixed; inset: 0; background: #000;
-            z-index: 100000; display: flex; justify-content: center; align-items: center;
-            color: #fff; letter-spacing: 12px; font-size: 0.7rem; font-weight: 200;
-            transition: 1s ease;
-        }
-        /* СКРИМЕР */
-        #scare-ui {
-            position: fixed; inset: 0;
-            z-index: 999999; background: #000;
-            display: none; justify-content: center; align-items: center;
-        }
-        #scare-ui img { 
-            width: 100%; height: 100%; object-fit: cover; 
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vorovskoy</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    cursor:none !important;
+    user-select:none;
+}
+
+body{
+    background:#000;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Inter',sans-serif;
+    overflow:hidden;
+    perspective:1500px;
+}
+
+#cursor{
+    width:6px;
+    height:6px;
+    background:#fff;
+    border-radius:50%;
+    position:fixed;
+    pointer-events:none;
+    z-index:10000;
+    box-shadow:0 0 15px 2px rgba(255,255,255,0.6);
+    transform:translate(-50%,-50%);
+}
+
+#rain-canvas{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    opacity:0.3;
+    pointer-events:none;
+}
+
+.card{
+    position:relative;
+    z-index:10;
+    background:rgba(255,255,255,0.02);
+    backdrop-filter:blur(30px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:50px;
+    padding:60px 50px;
+    width:350px;
+    text-align:center;
+    box-shadow:0 30px 60px rgba(0,0,0,0.8);
+    transition:0.6s;
+}
+
+.card:hover{
+    border-color:rgba(255,255,255,0.18);
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.8),
+        0 0 12px rgba(255,255,255,0.08);
+}
+
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:45px;
+    margin-bottom:35px;
+    filter:grayscale(1) brightness(0.8);
+    transition:0.9s;
+}
+
+.card:hover .avatar{
+    filter:grayscale(0) brightness(1);
+}
+
+h1{
+    color:#fff;
+    font-weight:100;
+    font-size:0.8rem;
+    letter-spacing:15px;
+    margin-bottom:45px;
+    opacity:0.3;
+}
+
+.btn{
+    width:100%;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.05);
+    padding:18px;
+    border-radius:24px;
+    color:rgba(255,255,255,0.5);
+    text-decoration:none;
+    font-size:0.6rem;
+    letter-spacing:4px;
+    display:block;
+    margin-bottom:15px;
+    transition:0.4s;
+}
+
+.btn:hover{
+    color:#fff;
+    background:rgba(255,255,255,0.05);
+}
+
+#overlay{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:100000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    letter-spacing:12px;
+    font-size:0.7rem;
+    transition:1s;
+}
+
+#scare-ui{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    background:#000;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    animation:shake 0.08s infinite;
+}
+
+#scare-ui img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+@keyframes shake{
+    0%{transform:translate(3px,3px);}
+    25%{transform:translate(-3px,3px);}
+    50%{transform:translate(3px,-3px);}
+    75%{transform:translate(-3px,-3px);}
+    100%{transform:translate(3px,3px);}
+}
+</style>
 </head>
 <body>
+
 <div id="overlay">CLICK TO ENTER</div>
 <div id="cursor"></div>
 <canvas id="rain-canvas"></canvas>
+
 <div id="scare-ui">
-    <img src="https://i.postimg.cc/nhPfjXd2/image-(1).png">
+<img src="https://i.postimg.cc/nhPfjXd2/image-(1).png">
 </div>
+
 <div class="card" id="profile-card">
-    <img src="https://i.postimg.cc/GtWsmLWc/add1378da04f19e360e823f524d58f17.png" class="avatar">
-    <h1>vorovskoy</h1>
-    <a href="#" class="btn" id="ds-btn">DISCORD</a>
-    <a href="#" class="btn" id="info-btn">INFO</a>
+<img src="https://i.postimg.cc/GtWsmLWc/add1378da04f19e360e823f524d58f17.png" class="avatar">
+<h1>vorovskoy</h1>
+<a href="#" class="btn" id="ds-btn">DISCORD</a>
+<a href="#" class="btn" id="info-btn">INFO</a>
 </div>
-<audio id="main-track" preload="auto" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+
+<audio id="main-track" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
-<audio id="scare-sound" preload="auto" src="https://freesound.org/data/previews/484/484341_10378536-lq.mp3"></audio>
+
+<!-- РАБОЧИЙ СКРИМ -->
+<audio id="scare-sound"
+src="https://www.soundjay.com/human/sounds/scream-01.mp3">
+</audio>
+
 <script>
-    const cursor = document.getElementById('cursor');
-    const card = document.getElementById('profile-card');
-    const track = document.getElementById('main-track');
-    const scareSound = document.getElementById('scare-sound');
-    const overlay = document.getElementById('overlay');
-    const scareUI = document.getElementById('scare-ui');
-    let scareTimeout;
+const cursor=document.getElementById('cursor');
+const card=document.getElementById('profile-card');
+const track=document.getElementById('main-track');
+const scareSound=document.getElementById('scare-sound');
+const overlay=document.getElementById('overlay');
+const scareUI=document.getElementById('scare-ui');
+let scareTimeout;
 
-    // Курсор и наклон
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        const xRot = (window.innerHeight / 2 - e.clientY) / 95;
-        const yRot = (e.clientX - window.innerWidth / 2) / 95;
-        card.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-    });
+document.addEventListener('mousemove',(e)=>{
+    cursor.style.left=e.clientX+'px';
+    cursor.style.top=e.clientY+'px';
+    const xRot=(window.innerHeight/2-e.clientY)/95;
+    const yRot=(e.clientX-window.innerWidth/2)/95;
+    card.style.transform=`rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+});
 
-    // Старт
-    overlay.addEventListener('click', () => {
-        track.volume = 0.2;
-        track.play();
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.remove(), 1000);
-    });
+overlay.addEventListener('click',()=>{
+    track.volume=0.2;
+    track.play();
+    overlay.style.opacity='0';
+    setTimeout(()=>overlay.remove(),1000);
+});
 
-    // ВКЛЮЧЕНИЕ СКРИМЕРА
-    document.getElementById('info-btn').onclick = (e) => {
-        e.preventDefault();
+document.getElementById('info-btn').onclick=(e)=>{
+    e.preventDefault();
+    clearTimeout(scareTimeout);
+    track.pause();
+    scareUI.style.display='flex';
+    cursor.style.visibility='hidden';
+
+    scareSound.currentTime=0;
+    scareSound.volume=1;
+    scareSound.play().catch(err=>console.log(err));
+
+    scareTimeout=setTimeout(hideScare,5000);
+};
+
+function hideScare(){
+    scareUI.style.display='none';
+    cursor.style.visibility='visible';
+    scareSound.pause();
+    scareSound.currentTime=0;
+    track.play();
+}
+
+window.addEventListener('keydown',(e)=>{
+    if(e.key==="Escape" && scareUI.style.display==='flex'){
         clearTimeout(scareTimeout);
-        track.pause();
-        scareUI.style.display = 'flex';
-        cursor.style.visibility = 'hidden';
-        scareSound.currentTime = 0;
-        scareSound.volume = 1;
-        scareSound.play();
-        scareTimeout = setTimeout(hideScare, 8000);
-    };
-
-    // Функция скрытия скримера
-    function hideScare() {
-        scareUI.style.display = 'none';
-        cursor.style.visibility = 'visible';
-        scareSound.pause();
-        scareSound.currentTime = 0;
-        track.play();
+        hideScare();
     }
+});
 
-    // ВЫКЛЮЧЕНИЕ СКРИМЕРА ПО ESC
-    window.addEventListener('keydown', (e) => {
-        if (e.key === "Escape" && scareUI.style.display === 'flex') {
-            clearTimeout(scareTimeout);
-            hideScare();
-        }
+document.getElementById('ds-btn').onclick=(e)=>{
+    e.preventDefault();
+    navigator.clipboard.writeText('v0r0vskoy');
+    e.target.innerText='COPIED';
+    setTimeout(()=>e.target.innerText='DISCORD',2000);
+};
+
+/* дождь */
+const canvas=document.getElementById('rain-canvas');
+const ctx=canvas.getContext('2d');
+let drops=[];
+function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+window.addEventListener('resize',resize);
+resize();
+
+for(let i=0;i<60;i++){
+    drops.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        len:Math.random()*20+10,
+        speed:Math.random()*0.8+0.4
     });
+}
 
-    // Discord
-    document.getElementById('ds-btn').onclick = (e) => {
-        e.preventDefault();
-        navigator.clipboard.writeText('v0r0vskoy');
-        e.target.innerText = 'COPIED';
-        setTimeout(() => e.target.innerText = 'DISCORD', 2000);
-    };
-
-    // Дождь
-    const canvas = document.getElementById('rain-canvas');
-    const ctx = canvas.getContext('2d');
-    let drops = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    for(let i=0; i<60; i++) drops.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, len: Math.random()*20+10, speed: Math.random()*0.8+0.4});
-    function rain() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-        ctx.lineWidth = 1;
-        drops.forEach(d => {
-            ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y+d.len); ctx.stroke();
-            d.y += d.speed;
-            if(d.y > canvas.height) d.y = -d.len;
-        });
-        requestAnimationFrame(rain);
-    }
-    rain();
+function rain(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.lineWidth=1;
+    drops.forEach(d=>{
+        ctx.beginPath();
+        ctx.moveTo(d.x,d.y);
+        ctx.lineTo(d.x,d.y+d.len);
+        ctx.stroke();
+        d.y+=d.speed;
+        if(d.y>canvas.height)d.y=-d.len;
+    });
+    requestAnimationFrame(rain);
+}
+rain();
 </script>
 </body>
 </html>
