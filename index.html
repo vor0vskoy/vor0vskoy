@@ -150,8 +150,8 @@ h1{
 <audio id="main-track" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
-<!-- ТВОЙ СКРИМЕР ЗВУК -->
-<audio id="scare-sound">
+<!-- СКРИМЕР ЗВУК С ЗАЦИКЛИВАНИЕМ -->
+<audio id="scare-sound" loop>
 <source src="https://s19.aconvert.com/convert/p3r68-cdx67/cr13r-pnpl8.mp3" type="audio/mpeg">
 </audio>
 <script>
@@ -161,7 +161,7 @@ const track=document.getElementById('main-track');
 const scareSound=document.getElementById('scare-sound');
 const overlay=document.getElementById('overlay');
 const scareUI=document.getElementById('scare-ui');
-let scareTimeout;
+
 document.addEventListener('mousemove',(e)=>{
     cursor.style.left=e.clientX+'px';
     cursor.style.top=e.clientY+'px';
@@ -169,23 +169,24 @@ document.addEventListener('mousemove',(e)=>{
     const yRot=(e.clientX-window.innerWidth/2)/95;
     card.style.transform=`rotateX(${xRot}deg) rotateY(${yRot}deg)`;
 });
+
 overlay.addEventListener('click',()=>{
     track.volume=0.2;
     track.play();
     overlay.style.opacity='0';
     setTimeout(()=>overlay.remove(),1000);
 });
+
 document.getElementById('info-btn').onclick=(e)=>{
     e.preventDefault();
-    clearTimeout(scareTimeout);
     track.pause();
     scareUI.style.display='flex';
     cursor.style.visibility='hidden';
     scareSound.currentTime=0;
     scareSound.volume=1;
     scareSound.play().catch(err=>console.log(err));
-    scareTimeout=setTimeout(hideScare,5000);
 };
+
 function hideScare(){
     scareUI.style.display='none';
     cursor.style.visibility='visible';
@@ -193,18 +194,21 @@ function hideScare(){
     scareSound.currentTime=0;
     track.play();
 }
+
 window.addEventListener('keydown',(e)=>{
     if(e.key==="Escape" && scareUI.style.display==='flex'){
-        clearTimeout(scareTimeout);
         hideScare();
     }
 });
+
 document.getElementById('ds-btn').onclick=(e)=>{
     e.preventDefault();
     navigator.clipboard.writeText('v0r0vskoy');
     e.target.innerText='COPIED';
     setTimeout(()=>e.target.innerText='DISCORD',2000);
+);
 };
+
 /* дождь */
 const canvas=document.getElementById('rain-canvas');
 const ctx=canvas.getContext('2d');
@@ -241,4 +245,3 @@ rain();
 </script>
 </body>
 </html>
-
