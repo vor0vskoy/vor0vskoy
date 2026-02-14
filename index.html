@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>vorovskoy</title>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300&display=swap');
-
 *{
     margin:0;
     padding:0;
@@ -15,7 +13,6 @@
     cursor:none !important;
     user-select:none;
 }
-
 body{
     background:#000;
     height:100vh;
@@ -26,7 +23,6 @@ body{
     overflow:hidden;
     perspective:1500px;
 }
-
 #cursor{
     width:6px;
     height:6px;
@@ -38,7 +34,6 @@ body{
     box-shadow:0 0 15px 2px rgba(255,255,255,0.6);
     transform:translate(-50%,-50%);
 }
-
 #rain-canvas{
     position:fixed;
     inset:0;
@@ -46,7 +41,6 @@ body{
     opacity:0.3;
     pointer-events:none;
 }
-
 .card{
     position:relative;
     z-index:10;
@@ -60,14 +54,12 @@ body{
     box-shadow:0 30px 60px rgba(0,0,0,0.8);
     transition:0.6s;
 }
-
 .card:hover{
     border-color:rgba(255,255,255,0.18);
     box-shadow:
         0 30px 60px rgba(0,0,0,0.8),
         0 0 12px rgba(255,255,255,0.08);
 }
-
 .avatar{
     width:120px;
     height:120px;
@@ -76,11 +68,9 @@ body{
     filter:grayscale(1) brightness(0.8);
     transition:0.9s;
 }
-
 .card:hover .avatar{
     filter:grayscale(0) brightness(1);
 }
-
 h1{
     color:#fff;
     font-weight:100;
@@ -89,7 +79,6 @@ h1{
     margin-bottom:45px;
     opacity:0.3;
 }
-
 .btn{
     width:100%;
     background:rgba(255,255,255,0.02);
@@ -104,12 +93,10 @@ h1{
     margin-bottom:15px;
     transition:0.4s;
 }
-
 .btn:hover{
     color:#fff;
     background:rgba(255,255,255,0.05);
 }
-
 #overlay{
     position:fixed;
     inset:0;
@@ -123,7 +110,6 @@ h1{
     font-size:0.7rem;
     transition:1s;
 }
-
 #scare-ui{
     position:fixed;
     inset:0;
@@ -134,13 +120,11 @@ h1{
     align-items:center;
     animation:shake 0.08s infinite;
 }
-
 #scare-ui img{
     width:100%;
     height:100%;
     object-fit:cover;
 }
-
 @keyframes shake{
     0%{transform:translate(3px,3px);}
     25%{transform:translate(-3px,3px);}
@@ -151,31 +135,25 @@ h1{
 </style>
 </head>
 <body>
-
 <div id="overlay">CLICK TO ENTER</div>
 <div id="cursor"></div>
 <canvas id="rain-canvas"></canvas>
-
 <div id="scare-ui">
 <img src="https://i.postimg.cc/nhPfjXd2/image-(1).png">
 </div>
-
 <div class="card" id="profile-card">
 <img src="https://i.postimg.cc/GtWsmLWc/add1378da04f19e360e823f524d58f17.png" class="avatar">
 <h1>vorovskoy</h1>
 <a href="#" class="btn" id="ds-btn">DISCORD</a>
 <a href="#" class="btn" id="info-btn">INFO</a>
 </div>
-
 <audio id="main-track" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
-
-<!-- РАБОЧИЙ СКРИМ -->
-<audio id="scare-sound"
-src="https://www.soundjay.com/human/sounds/scream-01.mp3">
+<!-- ТВОЙ СКРИМЕР ЗВУК -->
+<audio id="scare-sound">
+<source src="https://drive.google.com/uc?id=1q6p9L9bIcGIJpVy1IQaNhkV1kx5VzuV5&export=download" type="audio/mpeg">
 </audio>
-
 <script>
 const cursor=document.getElementById('cursor');
 const card=document.getElementById('profile-card');
@@ -184,7 +162,6 @@ const scareSound=document.getElementById('scare-sound');
 const overlay=document.getElementById('overlay');
 const scareUI=document.getElementById('scare-ui');
 let scareTimeout;
-
 document.addEventListener('mousemove',(e)=>{
     cursor.style.left=e.clientX+'px';
     cursor.style.top=e.clientY+'px';
@@ -192,28 +169,23 @@ document.addEventListener('mousemove',(e)=>{
     const yRot=(e.clientX-window.innerWidth/2)/95;
     card.style.transform=`rotateX(${xRot}deg) rotateY(${yRot}deg)`;
 });
-
 overlay.addEventListener('click',()=>{
     track.volume=0.2;
     track.play();
     overlay.style.opacity='0';
     setTimeout(()=>overlay.remove(),1000);
 });
-
 document.getElementById('info-btn').onclick=(e)=>{
     e.preventDefault();
     clearTimeout(scareTimeout);
     track.pause();
     scareUI.style.display='flex';
     cursor.style.visibility='hidden';
-
     scareSound.currentTime=0;
     scareSound.volume=1;
     scareSound.play().catch(err=>console.log(err));
-
     scareTimeout=setTimeout(hideScare,5000);
 };
-
 function hideScare(){
     scareUI.style.display='none';
     cursor.style.visibility='visible';
@@ -221,21 +193,18 @@ function hideScare(){
     scareSound.currentTime=0;
     track.play();
 }
-
 window.addEventListener('keydown',(e)=>{
     if(e.key==="Escape" && scareUI.style.display==='flex'){
         clearTimeout(scareTimeout);
         hideScare();
     }
 });
-
 document.getElementById('ds-btn').onclick=(e)=>{
     e.preventDefault();
     navigator.clipboard.writeText('v0r0vskoy');
     e.target.innerText='COPIED';
     setTimeout(()=>e.target.innerText='DISCORD',2000);
 };
-
 /* дождь */
 const canvas=document.getElementById('rain-canvas');
 const ctx=canvas.getContext('2d');
@@ -246,7 +215,6 @@ function resize(){
 }
 window.addEventListener('resize',resize);
 resize();
-
 for(let i=0;i<60;i++){
     drops.push({
         x:Math.random()*canvas.width,
@@ -255,7 +223,6 @@ for(let i=0;i<60;i++){
         speed:Math.random()*0.8+0.4
     });
 }
-
 function rain(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.strokeStyle='rgba(255,255,255,0.2)';
