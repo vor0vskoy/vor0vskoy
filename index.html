@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,7 +135,7 @@ h1{
 </style>
 </head>
 <body>
-<div id="overlay">НАЖМИ ENTER ИЛИ КЛИКНИ ДЛЯ ВХОДА</div>
+<div id="overlay">PRESS ENTER TO ENTER</div>
 <div id="cursor"></div>
 <canvas id="rain-canvas"></canvas>
 <div id="scare-ui">
@@ -175,7 +175,7 @@ document.addEventListener('mousemove', (e) => {
 
 // Функция входа на сайт
 function enterSite() {
-    if (!overlay.parentNode) return; // уже убран
+    if (!overlay.parentNode) return;
 
     track.volume = 0.2;
     track.play().catch(err => console.log(err));
@@ -186,15 +186,13 @@ function enterSite() {
     }, 1000);
 }
 
-// Вход по клику, Enter, Space и тачу (мобильные)
-overlay.addEventListener('click', enterSite);
+// Вход ТОЛЬКО по клавише Enter (клик и тач убраны)
 document.addEventListener('keydown', (e) => {
-    if ((e.key === 'Enter' || e.key === ' ') && overlay.parentNode) {
+    if (e.key === 'Enter' && overlay.parentNode) {
         enterSite();
         e.preventDefault();
     }
 });
-document.addEventListener('touchstart', enterSite);
 
 // Кнопка INFO — скример
 document.getElementById('info-btn').addEventListener('click', (e) => {
