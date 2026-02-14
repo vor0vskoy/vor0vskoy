@@ -108,7 +108,7 @@ h1{
     color:#fff;
     letter-spacing:12px;
     font-size:0.7rem;
-    transition:1s;
+    transition:opacity 1s;
 }
 #scare-ui{
     position:fixed;
@@ -135,110 +135,136 @@ h1{
 </style>
 </head>
 <body>
-<div id="overlay">CLICK TO ENTER</div>
+<div id="overlay">НАЖМИ ENTER ИЛИ КЛИКНИ ДЛЯ ВХОДА</div>
 <div id="cursor"></div>
 <canvas id="rain-canvas"></canvas>
 <div id="scare-ui">
-<img src="https://i.postimg.cc/nhPfjXd2/image-(1).png">
+    <img src="https://i.postimg.cc/nhPfjXd2/image-(1).png">
 </div>
 <div class="card" id="profile-card">
-<img src="https://i.postimg.cc/GtWsmLWc/add1378da04f19e360e823f524d58f17.png" class="avatar">
-<h1>vorovskoy</h1>
-<a href="#" class="btn" id="ds-btn">DISCORD</a>
-<a href="#" class="btn" id="info-btn">INFO</a>
+    <img src="https://i.postimg.cc/GtWsmLWc/add1378da04f19e360e823f524d58f17.png" class="avatar">
+    <h1>vorovskoy</h1>
+    <a href="#" class="btn" id="ds-btn">DISCORD</a>
+    <a href="#" class="btn" id="info-btn">INFO</a>
 </div>
+
 <audio id="main-track" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
-<!-- СКРИМЕР ЗВУК С ЗАЦИКЛИВАНИЕМ -->
 <audio id="scare-sound" loop>
-<source src="https://s19.aconvert.com/convert/p3r68-cdx67/cr13r-pnpl8.mp3" type="audio/mpeg">
+    <source src="https://s19.aconvert.com/convert/p3r68-cdx67/cr13r-pnpl8.mp3" type="audio/mpeg">
 </audio>
+
 <script>
-const cursor=document.getElementById('cursor');
-const card=document.getElementById('profile-card');
-const track=document.getElementById('main-track');
-const scareSound=document.getElementById('scare-sound');
-const overlay=document.getElementById('overlay');
-const scareUI=document.getElementById('scare-ui');
+const cursor = document.getElementById('cursor');
+const card = document.getElementById('profile-card');
+const track = document.getElementById('main-track');
+const scareSound = document.getElementById('scare-sound');
+const overlay = document.getElementById('overlay');
+const scareUI = document.getElementById('scare-ui');
 
-document.addEventListener('mousemove',(e)=>{
-    cursor.style.left=e.clientX+'px';
-    cursor.style.top=e.clientY+'px';
-    const xRot=(window.innerHeight/2-e.clientY)/95;
-    const yRot=(e.clientX-window.innerWidth/2)/95;
-    card.style.transform=`rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+// Кастомный курсор + 3D-эффект карточки
+document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+
+    const xRot = (window.innerHeight / 2 - e.clientY) / 95;
+    const yRot = (e.clientX - window.innerWidth / 2) / 95;
+    card.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
 });
 
-overlay.addEventListener('click',()=>{
-    track.volume=0.2;
-    track.play();
-    overlay.style.opacity='0';
-    setTimeout(()=>overlay.remove(),1000);
-});
+// Функция входа на сайт
+function enterSite() {
+    if (!overlay.parentNode) return; // уже убран
 
-document.getElementById('info-btn').onclick=(e)=>{
-    e.preventDefault();
-    track.pause();
-    scareUI.style.display='flex';
-    cursor.style.visibility='hidden';
-    scareSound.currentTime=0;
-    scareSound.volume=1;
-    scareSound.play().catch(err=>console.log(err));
-};
+    track.volume = 0.2;
+    track.play().catch(err => console.log(err));
 
-function hideScare(){
-    scareUI.style.display='none';
-    cursor.style.visibility='visible';
-    scareSound.pause();
-    scareSound.currentTime=0;
-    track.play();
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+        if (overlay.parentNode) overlay.remove();
+    }, 1000);
 }
 
-window.addEventListener('keydown',(e)=>{
-    if(e.key==="Escape" && scareUI.style.display==='flex'){
+// Вход по клику, Enter, Space и тачу (мобильные)
+overlay.addEventListener('click', enterSite);
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && overlay.parentNode) {
+        enterSite();
+        e.preventDefault();
+    }
+});
+document.addEventListener('touchstart', enterSite);
+
+// Кнопка INFO — скример
+document.getElementById('info-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    track.pause();
+    scareUI.style.display = 'flex';
+    cursor.style.visibility = 'hidden';
+    scareSound.currentTime = 0;
+    scareSound.volume = 1;
+    scareSound.play().catch(err => console.log(err));
+});
+
+// Скрытие скримера по Escape
+function hideScare() {
+    scareUI.style.display = 'none';
+    cursor.style.visibility = 'visible';
+    scareSound.pause();
+    scareSound.currentTime = 0;
+    track.play().catch(err => console.log(err));
+}
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && scareUI.style.display === 'flex') {
         hideScare();
     }
 });
 
-document.getElementById('ds-btn').onclick=(e)=>{
+// Кнопка DISCORD — копирование в буфер
+document.getElementById('ds-btn').addEventListener('click', (e) => {
     e.preventDefault();
     navigator.clipboard.writeText('v0r0vskoy');
-    e.target.innerText='COPIED';
-    setTimeout(()=>e.target.innerText='DISCORD',2000);
-);
-};
+    e.target.innerText = 'COPIED';
+    setTimeout(() => e.target.innerText = 'DISCORD', 2000);
+});
 
-/* дождь */
-const canvas=document.getElementById('rain-canvas');
-const ctx=canvas.getContext('2d');
-let drops=[];
-function resize(){
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
+/* Дождь */
+const canvas = document.getElementById('rain-canvas');
+const ctx = canvas.getContext('2d');
+let drops = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
-window.addEventListener('resize',resize);
+window.addEventListener('resize', resize);
 resize();
-for(let i=0;i<60;i++){
+
+for (let i = 0; i < 60; i++) {
     drops.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        len:Math.random()*20+10,
-        speed:Math.random()*0.8+0.4
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        len: Math.random() * 20 + 10,
+        speed: Math.random() * 0.8 + 0.4
     });
 }
-function rain(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle='rgba(255,255,255,0.2)';
-    ctx.lineWidth=1;
-    drops.forEach(d=>{
+
+function rain() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+
+    drops.forEach(d => {
         ctx.beginPath();
-        ctx.moveTo(d.x,d.y);
-        ctx.lineTo(d.x,d.y+d.len);
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.len);
         ctx.stroke();
-        d.y+=d.speed;
-        if(d.y>canvas.height)d.y=-d.len;
+
+        d.y += d.speed;
+        if (d.y > canvas.height) d.y = -d.len;
     });
+
     requestAnimationFrame(rain);
 }
 rain();
